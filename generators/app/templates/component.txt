@@ -1,0 +1,58 @@
+private <%=tsModelObj%>Service: <%=tsModelName %>Service;
+<%=tsModelObj%>s = [];
+<%=tsModelObj%> = {};
+list(){
+    this.<%=tsModelObj%>Service.list().subscribe(
+        res => {
+            this.<%=tsModelObj%>s = res;
+        },
+        err => {
+            console.log("Error occured");
+        }
+    );
+}
+get(id){
+    this.<%=tsModelObj%>Service.get(id).subscribe(
+        res => {
+            this.<%=tsModelObj%> = res;
+        },
+        err => {
+            console.log("Error occured");
+        }
+    );
+}
+
+create(form: NgForm) {
+    var data = form.value;
+    this.<%=tsModelObj%>Service.add(data).subscribe(
+        res => {
+            console.log(res);
+            form.resetForm();
+        },
+        err => {
+            console.log(err);
+        }
+    );
+}
+update(form: NgForm) {
+    var data = form.value;
+    this.<%=tsModelObj%>Service.edit(data).subscribe(
+        res => {
+            console.log(res);
+            form.resetForm();
+        },
+        err => {
+            console.log(err);
+        }
+    )
+}
+remove(id){
+    this.<%=tsModelObj%>Service.remove(id).subscribe(
+        res => {
+            console.log(res);
+        },
+        err => {
+            console.log(err);
+        }
+    );
+}

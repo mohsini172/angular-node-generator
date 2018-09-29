@@ -1,0 +1,30 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+@Injectable()
+export class <%=tsModelName %>Service {
+
+  constructor(private http: HttpClient) { }
+  public list(): Observable<<%=tsModelName %>[]> {
+    return this.http.get<<%=tsModelName %>[]>('/api/<%=fileName %>');
+  }
+
+  public get(id): Observable<<%=tsModelName %>> {
+    return this.http.get<<%=tsModelName %>>('/api/<%=fileName %>/', <%=tsModelObj%>);
+  }
+  public add<%=tsModelName %>(<%=tsModelObj%>: <%=tsModelName %>) {
+    return this.http.post('/api/<%=fileName %>/', <%=tsModelObj%>)
+  }
+  public remove<%=tsModelName %>(id) {
+    return this.http.delete('/api/<%=fileName %>/' + id, {})
+  }
+  public edit<%=tsModelName %>(id){
+      return this.http.put('/api/<%=fileName %>/' + id, {})
+  }
+}
+
+export class <%=tsModelName %>{
+    constructor(
+        <%=tsParams %>
+    ){}
+}

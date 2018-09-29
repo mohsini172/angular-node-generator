@@ -1,0 +1,109 @@
+var express = require('express');
+var router = express.Router();
+
+router.get('/', list);
+router.get('/:id', show);
+router.post('/', create);
+router.put('/:id', update);
+router.delete('/:id', remove);
+module.exports = router;
+
+
+
+
+var <%=modelName%>Model = require('./<%=modelName%>Model.model.js');
+
+
+
+
+function list(req, res) {
+    <%=modelName%>Model.find(function (err, <%=modelName%>s) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Error getting <%=modelName%>.'
+            });
+        }
+        return res.json(<%=modelName%>s);
+    });
+}
+
+function show(req, res) {
+    var id = req.params.id;
+    <%=modelName%>Model.findOne({ _id: id })
+        .exec(function (err, <%=modelName%>) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting <%=modelName%>.',
+                    error: err
+                });
+            }
+            if (!<%=modelName%>) {
+                return res.status(404).json({
+                    message: 'No such <%=modelName%>'
+                });
+            }
+            return res.json(<%=modelName%>);
+        });
+}
+
+function create(req, res) {
+    var <%=modelName%> = new <%=modelName%>Model({
+        <%=createParams%>
+    });
+
+    <%=modelName%>.save(function (err, <%=modelName%>) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Error saving <%=modelName%>',
+                error: err
+            });
+        }
+        return res.json({
+            message: 'saved',
+            _id: <%=modelName%>._id
+        });
+    });
+}
+function update(req, res) {
+    var id = req.params.id;
+    <%=modelName%>Model.findOne({ _id: id }, function (err, <%=modelName%>) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Error saving <%=modelName%>',
+                error: err
+            });
+        }
+        if (!<%=modelName%>) {
+            return res.status(404).json({
+                message: 'No such <%=modelName%>'
+            });
+        }
+
+        <%=updateParams%>
+
+        <%=modelName%>.save(function (err, <%=modelName%>) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error getting <%=modelName%>.'
+                });
+            }
+            if (!<%=modelName%>) {
+                return res.status(404).json({
+                    message: 'No such <%=modelName%>'
+                });
+            }
+            return res.json(<%=modelName%>);
+        });
+    });
+}
+function remove(req, res) {
+    var id = req.params.id;
+    <%=modelName%>Model.findByIdAndRemove(id, function (err, <%=modelName%>) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Error getting <%=modelName%>.'
+            });
+        }
+        return res.json(<%=modelName%>);
+    });
+}
